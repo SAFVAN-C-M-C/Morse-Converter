@@ -7,79 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morse Code Converter</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            margin-top: 50px;
-        }
-
-        .result-container {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-    </style>
+    <link rel="stylesheet" href="/css/Style.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/js/Script.js"></script>
 </head>
 <body>
 
 <div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h1 class="display-4">Morse Code Converter</h1>
+    <div class="card shadow border-0 ">
+        <div class="card-header border-0 d-flex justify-content-center ">
+            <h1 class="text-primary ">Morse Code Translate</h1>
         </div>
         <div class="card-body">
             <form id="conversionForm">
@@ -93,73 +30,20 @@
                     <input type="checkbox" id="toggleConversion">
                     <span class="slider"></span>
                 </label>
-                <span class="ml-2">Toggle Conversion</span>
+                <!-- <span class="ml-2">Toggle Conversion</span> -->
             </form>
         </div>
     </div>
 
     <div class="result-container card mt-3">
-        <div class="card-header">
-            <h3 class="display-5">Converted Morse Code</h3>
-        </div>
         <div class="card-body">
-            <textarea class="form-control" rows="4" readonly></textarea>
+            <h3 class="output" draggable="false" readonly></h3>
             <button class="btn btn-secondary mt-3" onclick="copyToClipboard()">Copy to Clipboard</button>
         </div>
     </div>
 </div>
 
-<script>
-    let isMorseMode = false;
 
-    $(document).ready(function () {
-        $('#conversionForm').submit(function (e) {
-            e.preventDefault(); // prevent form submission
-
-            const formData = $(this).serialize();
-
-            // Use isMorseMode to determine the conversion direction
-            const url = isMorseMode ? '/convertToText' : '/convert';
-
-            // Send AJAX request
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: formData,
-                dataType: 'json',
-                success: function (response) {
-                    // Update the result container with the converted text or Morse code
-                    $('.result-container textarea').val(response.result);
-                    $('.result-container').show();
-                },
-                error: function (error) {
-                    console.log('Error:', error);
-                }
-            });
-        });
-
-        // Toggle conversion mode when the checkbox is clicked
-        $('#toggleConversion').click(function () {
-            isMorseMode = !isMorseMode;
-
-            // Update the input placeholder based on the mode
-            const placeholderText = isMorseMode ? 'Enter Morse code' : 'Enter text';
-            $('#text').attr('placeholder', placeholderText);
-
-            // Clear the input and result when toggling
-            $('#text').val('');
-            $('.result-container textarea').val('');
-            $('.result-container').hide();
-        });
-    });
-
-    function copyToClipboard() {
-        const textarea = document.querySelector('.result-container textarea');
-        textarea.select();
-        document.execCommand('copy');
-        alert('Copied to clipboard!');
-    }
-</script>
 
 </body>
 </html>

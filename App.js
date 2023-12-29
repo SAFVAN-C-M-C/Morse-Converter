@@ -5,7 +5,7 @@ const { convertToMorse, convertToText } = require("./helper/Morse");
 const app = express();
 
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.use(express.static('Public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Enable JSON parsing
 
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 app.post('/convert', (req, res) => {
     const text = req.body.text;
     const morseCode = convertToMorse(text);
-    res.json({ morseCode });
+    res.json({ result:morseCode });
 });
 app.post('/convertToText', (req, res) => {
     const morseCode = req.body.text; // Assuming the Morse code is sent as 'text' in the request body
